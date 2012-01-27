@@ -25,9 +25,9 @@ class CompassProject
 {
     private $commandCaller;
 
-    public function __construct(CommandCaller $command_caller)
+    public function __construct(CommandCaller $commandCaller)
     {
-        $this->commandCaller = $command_caller;
+        $this->commandCaller = $commandCaller;
     }
 
     public function init()
