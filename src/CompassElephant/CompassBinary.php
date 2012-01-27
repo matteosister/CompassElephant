@@ -29,11 +29,11 @@ class CompassBinary
     {
         $this->path = $path;
         if ($path == null) {
-            $this->tryToFindCompass();
+            $this->tryToFindCompassExecutable();
         }
     }
 
-    private function tryToFindCompass()
+    private function tryToFindCompassExecutable()
     {
         $this->path = trim(exec('which compass'), PHP_EOL);
     }
