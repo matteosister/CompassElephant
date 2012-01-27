@@ -44,7 +44,7 @@ class CommandCaller
     public function __construct(CompassBinary $binary, $projectPath)
     {
         $this->binary = $binary;
-        $this->projectPath = $projectPath;
+        $this->projectPath = realpath($projectPath);
     }
 
     public function init()
