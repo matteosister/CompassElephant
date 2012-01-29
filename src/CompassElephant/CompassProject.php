@@ -13,7 +13,9 @@
 
 namespace CompassElephant;
 
-use CompassElephant\CommandCaller;
+use CompassElephant\CommandCaller,
+    CompassElephant\StalenessChecker\NativeStalenessChecker,
+    CompassElephant\StalenessChecker\FinderStalenessChecker;
 
 /**
  * CompassElephant
@@ -24,10 +26,13 @@ use CompassElephant\CommandCaller;
 class CompassProject
 {
     private $commandCaller;
+    private $nativeStalenessChecker;
+    private $configFile = null;
 
-    public function __construct(CommandCaller $command_caller)
+    public function __construct(CommandCaller $commandCaller)
     {
-        $this->commandCaller = $command_caller;
+        $this->nativeStalenessChecker = true;
+        $this->commandCaller = $commandCaller;
     }
 
     public function init()
@@ -37,19 +42,40 @@ class CompassProject
 
     public function isClean()
     {
-        $state = $this->commandCaller->checkState()->getOutputLines();
-        $clean = true;
-        foreach ($state as $output) {
-            if (!preg_match('/^unchanged (.*)/', $output)) {
-                $clean = false;
-                break;
-            }
-        }
-        return $clean;
+        return $this->getStalenessChecker()->isClean();
     }
 
     public function compile()
     {
         $this->commandCaller->compile();
+    }
+
+    private function getStalenessChecker()
+    {
+        if ($this->nativeStalenessChecker) {
+            return new NativeStalenessChecker($this->commandCaller);
+        } else {
+            return new FinderStalenessChecker($this->commandCaller->getProjectPath(), $this->configFile);
+        }
+    }
+
+    public function setNativeStalenessChecker($nativeStalenessChecker)
+    {
+        $this->nativeStalenessChecker = $nativeStalenessChecker;
+    }
+
+    public function getNativeStalenessChecker()
+    {
+        return $this->nativeStalenessChecker;
+    }
+
+    public function setConfigFile($configFile)
+    {
+        $this->configFile = $configFile;
+    }
+
+    public function getConfigFile()
+    {
+        return $this->configFile;
     }
 }
