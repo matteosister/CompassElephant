@@ -33,9 +33,9 @@ class CommandCaller
      */
     private $projectPath;
     /**
-     * @var array
+     * @var string
      */
-    private $outputLines;
+    private $output;
 
     /**
      * @param CompassBinary $binary      a CompassBinary instance
@@ -49,35 +49,45 @@ class CommandCaller
 
     public function init()
     {
-        $cmd = 'compass create';
+        $cmd = $this->binary->getPath().' create';
         $this->execute($cmd);
         return $this;
     }
 
     public function checkState()
     {
-        $cmd = 'compass compile --dry-run --boring';
+        $cmd = $this->binary->getPath().' compile --dry-run --boring';
         $this->execute($cmd);
         return $this;
     }
 
     public function compile()
     {
-        $cmd = 'compass compile';
+        $cmd = $this->binary->getPath().' compile';
         $this->execute($cmd);
         return $this;
     }
 
     private function execute($cmd)
     {
-        $process = new Process($cmd, $this->projectPath);
-        $process->setTimeout(15000);
+        $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
-        $this->outputLines = explode(PHP_EOL, trim($process->getOutput(), PHP_EOL));
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException($process->getErrorOutput());
+        }
+        $this->output = trim($process->getOutput(), PHP_EOL);
     }
 
-    public function getOutputLines()
+    public function getOutput()
     {
-        return $this->outputLines;
+        return $this->output;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProjectPath()
+    {
+        return $this->projectPath;
     }
 }
