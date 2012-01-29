@@ -14,6 +14,7 @@
 namespace CompassElephant\StalenessChecker;
 
 use CompassElephant\StalenessChecker\StalenessCheckerInterface;
+use Symfony\Component\Finder\Finder;
 
 /**
  * FinderStalenessChecker
@@ -45,7 +46,7 @@ class FinderStalenessChecker implements StalenessCheckerInterface
      */
     public function isClean()
     {
-        return true;
+        return $this->getSassFilesMaxAge() < $this->getCssFilesMaxAge();
     }
 
     private function findPaths()
@@ -58,13 +59,39 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         $contents = fread($handle, filesize($config_filename));
         foreach(explode(PHP_EOL, $contents) as $line)
         {
-            if (preg_match_all('/sass_dir = "(.*)"/', $line, $matches) !== 0) {
+            if (preg_match('/sass_dir = "(.*)"/', $line, $matches) !== 0) {
                 $this->sassPath = $matches[1];
             }
-            if (preg_match_all('/css_dir = "(.*)"/', $line, $matches) !== 0) {
+            if (preg_match('/css_dir = "(.*)"/', $line, $matches) !== 0) {
                 $this->cssPath = $matches[1];
             }
         }
-        var_dump($this);
+    }
+
+    private function getSassFilesMaxAge()
+    {
+        $finder = new Finder();
+        $finder
+            ->in(realpath($this->projectPath.DIRECTORY_SEPARATOR.$this->sassPath))
+            ->name('*.sass')->name('*.scss');
+        $ages = array();
+        foreach($finder as $file)
+        {
+            $ages[] = filemtime($file);
+        }
+        return max($ages);
+    }
+    private function getCssFilesMaxAge()
+    {
+        $finder = new Finder();
+        $finder
+            ->in(realpath($this->projectPath.DIRECTORY_SEPARATOR.$this->cssPath))
+            ->name('*.css');
+        $ages = array();
+        foreach($finder as $file)
+        {
+            $ages[] = filemtime($file);
+        }
+        return max($ages);
     }
 }
