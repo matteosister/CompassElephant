@@ -21,7 +21,7 @@ use CompassElephant\TestCase;
  * @author Matteo Giachino <matteog@gmail.com>
  */
 
-class CompassElephantTest extends TestCase
+class CompassProjectTest extends TestCase
 {
     public function setUp()
     {

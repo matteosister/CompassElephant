@@ -26,54 +26,87 @@ use CompassElephant\CommandCaller,
 class CompassProject
 {
     private $commandCaller;
-    private $nativeStalenessChecker;
+    private $stalenessChecker;
     private $configFile = null;
 
+    /**
+     * Class constructor
+     *
+     * @param CommandCaller $commandCaller a CommandCaller instance
+     */
     public function __construct(CommandCaller $commandCaller)
     {
         $this->nativeStalenessChecker = true;
         $this->commandCaller = $commandCaller;
     }
 
+    /**
+     * Create a new compass project
+     */
     public function init()
     {
         $this->commandCaller->init();
     }
 
+    /**
+     * Check if the project is up-to-date or needs to be recompiled
+     *
+     * @return bool
+     */
     public function isClean()
     {
-        return $this->getStalenessChecker()->isClean();
+        return $this->stalenessChecker->isClean();
     }
 
+    /**
+     * Compile the project
+     */
     public function compile()
     {
         $this->commandCaller->compile();
     }
 
-    private function getStalenessChecker()
+    /**
+     * nativeStalenessChecker setter
+     *
+     * @param bool $stalenessChecker native or not
+     */
+    public function setStalenessChecker($stalenessChecker)
     {
-        if ($this->nativeStalenessChecker) {
-            return new NativeStalenessChecker($this->commandCaller);
+        if ($stalenessChecker == 'finder') {
+            $this->stalenessChecker = new FinderStalenessChecker($this->commandCaller->getProjectPath(), $this->configFile);
+        } else if ($stalenessChecker == 'native') {
+            $this->stalenessChecker = new NativeStalenessChecker($this->commandCaller);
         } else {
-            return new FinderStalenessChecker($this->commandCaller->getProjectPath(), $this->configFile);
+            throw new \InvalidParameterException(sprintf('The stalenessCheker should be "finder" or "native", %s given', $stalenessChecker));
         }
     }
 
-    public function setNativeStalenessChecker($nativeStalenessChecker)
+    /**
+     * nativeStalenessChecker getter
+     *
+     * @return bool
+     */
+    public function getStalenessChecker()
     {
-        $this->nativeStalenessChecker = $nativeStalenessChecker;
+        return $this->stalenessChecker;
     }
 
-    public function getNativeStalenessChecker()
-    {
-        return $this->nativeStalenessChecker;
-    }
-
+    /**
+     * configFile setter
+     *
+     * @param string $configFile the compass config file name
+     */
     public function setConfigFile($configFile)
     {
         $this->configFile = $configFile;
     }
 
+    /**
+     * configFile getter
+     *
+     * @return null
+     */
     public function getConfigFile()
     {
         return $this->configFile;

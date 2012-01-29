@@ -72,9 +72,6 @@ class CommandCaller
     {
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
-        if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
-        }
         $this->output = trim($process->getOutput(), PHP_EOL);
     }
 

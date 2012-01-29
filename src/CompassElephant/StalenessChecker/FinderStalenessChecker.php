@@ -47,7 +47,10 @@ class FinderStalenessChecker implements StalenessCheckerInterface
      */
     public function isClean()
     {
-        return $this->getFilesMaxAge($this->sassPath, array('*.sass', '*.scss')) < $this->getFilesMaxAge($this->cssPath, array('*.css'));
+        if ($this->getConfigFileAge() > max($this->getSassMaxAge(), $this->getStylesheetsMaxAge())) {
+            return false;
+        }
+        return $this->getSassMaxAge() < $this->getStylesheetsMaxAge();
     }
 
     private function checkPaths()
@@ -79,21 +82,33 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         }
     }
 
+    private function getStylesheetsMaxAge()
+    {
+        return $this->getFilesMaxAge($this->cssPath, array('*.css'));
+    }
+
+    private function getSassMaxAge()
+    {
+        return $this->getFilesMaxAge($this->sassPath, array('*.sass', '*.scss'));
+    }
+
     private function getFilesMaxAge($path, $names)
     {
         $finder = new Finder();
-        $finder->in(realpath($path));
+        $finder->files()->in(realpath($path))->ignoreDotFiles(true);
         foreach($names as $name) {
             $finder->name($name);
-        }
-        if (count($finder) == 0) {
-            return 0;
         }
         $ages = array();
         foreach($finder as $file)
         {
             $ages[] = filemtime($file);
         }
-        return max($ages);
+        return max(array_merge($ages, array(0)));
+    }
+
+    private function getConfigFileAge()
+    {
+        return filemtime(realpath($this->projectPath.DIRECTORY_SEPARATOR.$this->configFile));
     }
 }
