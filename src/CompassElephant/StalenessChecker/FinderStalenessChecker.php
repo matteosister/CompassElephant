@@ -37,6 +37,7 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         $this->projectPath = $projectPath;
         $this->configFile = $configFile;
         $this->findPaths();
+        $this->checkPaths();
     }
 
     /**
@@ -46,7 +47,17 @@ class FinderStalenessChecker implements StalenessCheckerInterface
      */
     public function isClean()
     {
-        return $this->getSassFilesMaxAge() < $this->getCssFilesMaxAge();
+        return $this->getFilesMaxAge($this->sassPath, array('*.sass', '*.scss')) < $this->getFilesMaxAge($this->cssPath, array('*.css'));
+    }
+
+    private function checkPaths()
+    {
+        if (!is_writable($this->sassPath)) {
+            throw new \RuntimeException(sprintf('The path %s should be writable (by the webserver user) for CompassElephant to compile the project', realpath($this->sassPath)));
+        }
+        if (!is_writable($this->cssPath)) {
+            throw new \RuntimeException(sprintf('The path %s should be writable (by the webserver user) for CompassElephant to compile the project', realpath($this->cssPath)));
+        }
     }
 
     private function findPaths()
@@ -60,33 +71,24 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         foreach(explode(PHP_EOL, $contents) as $line)
         {
             if (preg_match('/sass_dir = "(.*)"/', $line, $matches) !== 0) {
-                $this->sassPath = $matches[1];
+                $this->sassPath = $this->projectPath.DIRECTORY_SEPARATOR.$matches[1];
             }
             if (preg_match('/css_dir = "(.*)"/', $line, $matches) !== 0) {
-                $this->cssPath = $matches[1];
+                $this->cssPath = $this->projectPath.DIRECTORY_SEPARATOR.$matches[1];
             }
         }
     }
 
-    private function getSassFilesMaxAge()
+    private function getFilesMaxAge($path, $names)
     {
         $finder = new Finder();
-        $finder
-            ->in(realpath($this->projectPath.DIRECTORY_SEPARATOR.$this->sassPath))
-            ->name('*.sass')->name('*.scss');
-        $ages = array();
-        foreach($finder as $file)
-        {
-            $ages[] = filemtime($file);
+        $finder->in(realpath($path));
+        foreach($names as $name) {
+            $finder->name($name);
         }
-        return max($ages);
-    }
-    private function getCssFilesMaxAge()
-    {
-        $finder = new Finder();
-        $finder
-            ->in(realpath($this->projectPath.DIRECTORY_SEPARATOR.$this->cssPath))
-            ->name('*.css');
+        if (count($finder) == 0) {
+            return 0;
+        }
         $ages = array();
         foreach($finder as $file)
         {
