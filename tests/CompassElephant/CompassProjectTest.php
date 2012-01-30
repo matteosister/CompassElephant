@@ -38,25 +38,12 @@ class CompassProjectTest extends TestCase
     {
         $this->getCompassProject()->init();
         $this->assertNotNull($this->getCommandCaller());
+        $this->assertEquals("unchanged sass/screen.scss\nunchanged sass/print.scss\nunchanged sass/ie.scss", $this->getCommandCaller()->checkState()->getOutput());
     }
 
     public function testProject()
     {
         $cp = $this->getCompassProject();
         $this->assertNotNull($cp);
-        $cp->init();
-        $this->assertTrue($cp->isClean());
-        $this->writeStyle('body { background-color: #000; }');
-        $this->assertFalse($cp->isClean());
-        $cp->compile();
-        $this->assertTrue($cp->isClean());
-    }
-
-    private function writeStyle($style)
-    {
-        sleep(1.1);
-        $handle = fopen($this->getPath().'/sass/screen.scss', 'w');
-        fwrite($handle, PHP_EOL.$style.PHP_EOL);
-        fclose($handle);
     }
 }

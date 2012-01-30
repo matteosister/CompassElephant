@@ -24,6 +24,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
      * @var \CompassElephant\CommandCaller
      */
     private $commandCaller;
+    /**
+     * @var \CompassElephant\CompassProject
+     */
     private $compassProject;
 
 
@@ -38,6 +41,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->commandCaller = new CommandCaller($this->binary, $this->path);
         $stalenessChecker = new FinderStalenessChecker($this->commandCaller->getProjectPath(), 'config.rb');
         $this->compassProject = new CompassProject($this->commandCaller, $stalenessChecker);
+        $this->compassProject->setConfigFile('config.rb');
     }
 
     /**
@@ -70,5 +74,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function getCompassProject()
     {
         return $this->compassProject;
+    }
+
+    protected function writeStyle($style)
+    {
+        sleep(1.1);
+        $handle = fopen($this->getPath().'/sass/screen.scss', 'w');
+        fwrite($handle, PHP_EOL.$style.PHP_EOL);
+        fclose($handle);
     }
 }
