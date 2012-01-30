@@ -50,7 +50,7 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         if ($this->getConfigFileAge() > max($this->getSassMaxAge(), $this->getStylesheetsMaxAge())) {
             return false;
         }
-        return $this->getSassMaxAge() < $this->getStylesheetsMaxAge();
+        return $this->getSassMaxAge() <= $this->getStylesheetsMaxAge();
     }
 
     private function checkPaths()
