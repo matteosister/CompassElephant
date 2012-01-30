@@ -40,8 +40,8 @@ class CommandCaller
     /**
      * Class constructor
      *
-     * @param CompassBinary $binary      a CompassBinary instance
      * @param string        $projectPath the path of the compass project
+     * @param CompassBinary $binary      a CompassBinary instance
      */
     public function __construct($projectPath, CompassBinary $binary = null)
     {

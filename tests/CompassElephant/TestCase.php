@@ -37,11 +37,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->path = $tempName;
         unlink($this->path);
         mkdir($this->path);
-        $this->binary = new CompassBinary(null);
-        $this->commandCaller = new CommandCaller($this->path, $this->binary);
-        $stalenessChecker = new FinderStalenessChecker($this->commandCaller->getProjectPath(), 'config.rb');
-        $this->compassProject = new CompassProject($this->commandCaller, $stalenessChecker);
-        $this->compassProject->setConfigFile('config.rb');
+        $this->compassProject = new CompassProject($this->path);
     }
 
     /**
@@ -57,7 +53,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function getBinary()
     {
-        return $this->binary;
+        return $this->compassProject->getCompassBinary();
     }
 
     /**
@@ -65,7 +61,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function getCommandCaller()
     {
-        return $this->commandCaller;
+        return $this->getCompassProject()->getCommandCaller();
     }
 
     /**
