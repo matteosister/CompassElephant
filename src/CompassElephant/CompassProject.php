@@ -57,10 +57,10 @@ class CompassProject
      * @param string                                                      $projectPath      the path to the compass project
      * @param \CompassElephant\CompassBinary|null                         $compassBinary    a CompassBinary instance
      * @param \CompassElephant\CommandCaller                              $commandCaller    a CommandCaller instance
-     * @param \CompassElephant\StalenessChecker\StalenessCheckerInterface $stalenessChecker a StalenessCheckerInterface instance
+     * @param mixed                                                       $stalenessChecker a StalenessCheckerInterface instance
      * @param string                                                      $configFile       the compass config file name
      */
-    public function __construct($projectPath, CompassBinary $compassBinary = null, CommandCaller $commandCaller = null, StalenessCheckerInterface $stalenessChecker = null, $configFile = 'config.rb')
+    public function __construct($projectPath, CompassBinary $compassBinary = null, CommandCaller $commandCaller = null, $stalenessChecker = null, $configFile = 'config.rb')
     {
         $this->projectPath = $projectPath;
         if ($compassBinary == null) {
@@ -73,6 +73,10 @@ class CompassProject
         $this->commandCaller = $commandCaller;
         if ($stalenessChecker == null) {
             $stalenessChecker = new FinderStalenessChecker($projectPath, $configFile);
+        } else {
+            if (is_string($stalenessChecker)) {
+                $class = new $stalenessChecker()
+            }
         }
         $this->stalenessChecker = $stalenessChecker;
         $this->configFile = $configFile;
