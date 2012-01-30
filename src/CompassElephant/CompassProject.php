@@ -14,6 +14,7 @@
 namespace CompassElephant;
 
 use CompassElephant\CommandCaller,
+    CompassElephant\StalenessChecker\StalenessCheckerInterface,
     CompassElephant\StalenessChecker\NativeStalenessChecker,
     CompassElephant\StalenessChecker\FinderStalenessChecker;
 
@@ -34,10 +35,10 @@ class CompassProject
      *
      * @param CommandCaller $commandCaller a CommandCaller instance
      */
-    public function __construct(CommandCaller $commandCaller)
+    public function __construct(CommandCaller $commandCaller, StalenessCheckerInterface $stalenessChecker)
     {
-        $this->nativeStalenessChecker = true;
         $this->commandCaller = $commandCaller;
+        $this->stalenessChecker = $stalenessChecker;
     }
 
     /**
@@ -67,25 +68,19 @@ class CompassProject
     }
 
     /**
-     * nativeStalenessChecker setter
+     * stalenessChecker setter
      *
-     * @param bool $stalenessChecker native or not
+     * @param CompassElephant\StalenessChecker\StalenessCheckerInterface $stalenessChecker the instance
      */
     public function setStalenessChecker($stalenessChecker)
     {
-        if ($stalenessChecker == 'finder') {
-            $this->stalenessChecker = new FinderStalenessChecker($this->commandCaller->getProjectPath(), $this->configFile);
-        } else if ($stalenessChecker == 'native') {
-            $this->stalenessChecker = new NativeStalenessChecker($this->commandCaller);
-        } else {
-            throw new \InvalidParameterException(sprintf('The stalenessCheker should be "finder" or "native", %s given', $stalenessChecker));
-        }
+        $this->stalenessChecker = $stalenessChecker;
     }
 
     /**
-     * nativeStalenessChecker getter
+     * stalenessChecker getter
      *
-     * @return bool
+     * @return CompassElephant\StalenessChecker\StalenessCheckerInterface
      */
     public function getStalenessChecker()
     {
