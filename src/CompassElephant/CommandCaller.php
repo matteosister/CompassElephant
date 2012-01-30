@@ -43,8 +43,11 @@ class CommandCaller
      * @param CompassBinary $binary      a CompassBinary instance
      * @param string        $projectPath the path of the compass project
      */
-    public function __construct(CompassBinary $binary, $projectPath)
+    public function __construct($projectPath, CompassBinary $binary = null)
     {
+        if ($binary == null) {
+            $binary = new CompassBinary();
+        }
         $this->binary = $binary;
         $this->projectPath = realpath($projectPath);
     }

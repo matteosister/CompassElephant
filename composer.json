@@ -1,9 +1,9 @@
 {
     "name": "cypresslab/gitelephant",
     "description": "A library to manage a compass project with PHP",
-    "keywords": ["compass", "scss", "sass", "css"],
+    "keywords": ["compass", "sass", "css"],
     "homepage": "http://matteosister.github.com/CompassElephant",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "license": "GPL3",
     "authors": [
         {
@@ -14,6 +14,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/process": ">=2.0.0",
+        "symfony/finder": ">=2.0.0",
         "behat/behat": ">=2.2.7"
     },
     "autoload": {
