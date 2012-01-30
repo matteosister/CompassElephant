@@ -30,11 +30,13 @@ class CompassProjectTest extends TestCase
 
     public function testBinary()
     {
+        $this->getCompassProject()->init();
         $this->assertNotNull($this->getBinary()->getPath());
     }
 
     public function testCaller()
     {
+        $this->getCompassProject()->init();
         $this->assertNotNull($this->getCommandCaller());
     }
 
@@ -52,6 +54,7 @@ class CompassProjectTest extends TestCase
 
     private function writeStyle($style)
     {
+        sleep(1.1);
         $handle = fopen($this->getPath().'/sass/screen.scss', 'w');
         fwrite($handle, PHP_EOL.$style.PHP_EOL);
         fclose($handle);

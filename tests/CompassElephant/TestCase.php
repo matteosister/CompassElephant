@@ -13,10 +13,16 @@
 
 namespace CompassElephant;
 
+use CompassElephant\StalenessChecker\FinderStalenessChecker,
+    CompassElephant\StalenessChecker\NativeStalenessChecker;
+
 class TestCase extends \PHPUnit_Framework_TestCase
 {
     private $path;
     private $binary;
+    /**
+     * @var \CompassElephant\CommandCaller
+     */
     private $commandCaller;
     private $compassProject;
 
@@ -30,7 +36,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
         mkdir($this->path);
         $this->binary = new CompassBinary(null);
         $this->commandCaller = new CommandCaller($this->binary, $this->path);
-        $this->compassProject = new CompassProject($this->commandCaller);
+        $stalenessChecker = new FinderStalenessChecker($this->commandCaller->getProjectPath(), 'config.rb');
+        $this->compassProject = new CompassProject($this->commandCaller, $stalenessChecker);
     }
 
     /**

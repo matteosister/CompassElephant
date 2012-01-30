@@ -23,8 +23,16 @@ use Symfony\Component\Process\Process;
 
 class CompassBinary
 {
+    /**
+     * @var null|string the path to the compass executable
+     */
     private $path;
 
+    /**
+     * class constructor
+     *
+     * @param null|string $path the path to the compass executable
+     */
     public function __construct($path = null)
     {
         $this->path = $path;
@@ -33,11 +41,21 @@ class CompassBinary
         }
     }
 
+    /**
+     * Try to find the compass executable
+     *
+     * WARNING: LINUX/UNIX ONLY
+     */
     private function tryToFindCompassExecutable()
     {
         $this->path = trim(exec('which compass'), PHP_EOL);
     }
 
+    /**
+     * path getter
+     *
+     * @return null|string
+     */
     public function getPath()
     {
         return $this->path;

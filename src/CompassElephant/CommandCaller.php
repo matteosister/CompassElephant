@@ -38,6 +38,8 @@ class CommandCaller
     private $output;
 
     /**
+     * Class constructor
+     *
      * @param CompassBinary $binary      a CompassBinary instance
      * @param string        $projectPath the path of the compass project
      */
@@ -47,13 +49,23 @@ class CommandCaller
         $this->projectPath = realpath($projectPath);
     }
 
+    /**
+     * build the init command
+     *
+     * @return CommandCaller
+     */
     public function init()
     {
-        $cmd = $this->binary->getPath().' create';
+        $cmd = $this->binary->getPath().' create --boring';
         $this->execute($cmd);
         return $this;
     }
 
+    /**
+     * build the checkState command, useful for native staleness check implementation
+     *
+     * @return CommandCaller
+     */
     public function checkState()
     {
         $cmd = $this->binary->getPath().' compile --dry-run --boring';
@@ -61,13 +73,23 @@ class CommandCaller
         return $this;
     }
 
+    /**
+     * build a compile command
+     *
+     * @return CommandCaller
+     */
     public function compile()
     {
-        $cmd = $this->binary->getPath().' compile';
+        $cmd = $this->binary->getPath().' compile --boring';
         $this->execute($cmd);
         return $this;
     }
 
+    /**
+     * Execute a command
+     *
+     * @param string $cmd the command
+     */
     private function execute($cmd)
     {
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
@@ -75,12 +97,19 @@ class CommandCaller
         $this->output = trim($process->getOutput(), PHP_EOL);
     }
 
+    /**
+     * gets the command output
+     *
+     * @return string
+     */
     public function getOutput()
     {
         return $this->output;
     }
 
     /**
+     * get the project path
+     *
      * @return string
      */
     public function getProjectPath()

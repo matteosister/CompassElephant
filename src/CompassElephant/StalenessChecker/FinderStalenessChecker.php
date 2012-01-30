@@ -32,12 +32,16 @@ class FinderStalenessChecker implements StalenessCheckerInterface
     private $sassPath;
     private $cssPath;
 
+    /**
+     * class constructor
+     *
+     * @param string $projectPath the path to the compass project
+     * @param string $configFile  the config file name
+     */
     public function __construct($projectPath, $configFile)
     {
         $this->projectPath = $projectPath;
-        $this->configFile = $configFile;
-        $this->findPaths();
-        $this->checkPaths();
+        $this->configFile  = $configFile;
     }
 
     /**
@@ -53,6 +57,11 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         return $this->getSassMaxAge() <= $this->getStylesheetsMaxAge();
     }
 
+    /**
+     * check if sass and stylesheets paths are writable
+     *
+     * @throws \RuntimeException
+     */
     private function checkPaths()
     {
         if (!is_writable($this->sassPath)) {
@@ -63,52 +72,87 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         }
     }
 
+    /**
+     * find sass and stylesheets files parsing the config file
+     *
+     * @throws \FileNotFoundException
+     */
     private function findPaths()
     {
-        $config_filename = $this->projectPath.DIRECTORY_SEPARATOR.$this->configFile;
-        $handle = fopen($config_filename, 'r');
+        $configFilename = $this->projectPath . DIRECTORY_SEPARATOR . $this->configFile;
+        $handle         = fopen($configFilename, 'r');
         if (false === $handle) {
-            throw new \FileNotFoundException($config_filename.' could not be found');
+            throw new \FileNotFoundException($configFilename . ' could not be found');
         }
-        $contents = fread($handle, filesize($config_filename));
-        foreach(explode(PHP_EOL, $contents) as $line)
-        {
-            if (preg_match('/sass_dir = "(.*)"/', $line, $matches) !== 0) {
-                $this->sassPath = $this->projectPath.DIRECTORY_SEPARATOR.$matches[1];
+        $contents = fread($handle, filesize($configFilename));
+        foreach (explode(PHP_EOL, $contents) as $line) {
+            if (preg_match('/sass_dir ?= ?"(.*)"/', $line, $matches) !== 0) {
+                $this->sassPath = $this->projectPath . DIRECTORY_SEPARATOR . $matches[1];
             }
-            if (preg_match('/css_dir = "(.*)"/', $line, $matches) !== 0) {
-                $this->cssPath = $this->projectPath.DIRECTORY_SEPARATOR.$matches[1];
+            if (preg_match('/css_dir ?= ?"(.*)"/', $line, $matches) !== 0) {
+                $this->cssPath = $this->projectPath . DIRECTORY_SEPARATOR . $matches[1];
             }
         }
     }
 
+    /**
+     * Get the max_age of stylesheets files
+     *
+     * @return int
+     */
     private function getStylesheetsMaxAge()
     {
+        if ($this->cssPath == null) {
+            $this->findPaths();
+            $this->checkPaths();
+        }
         return $this->getFilesMaxAge($this->cssPath, array('*.css'));
     }
 
+    /**
+     * get the max_age of sass/scss files
+     *
+     * @return int
+     */
     private function getSassMaxAge()
     {
+        if ($this->sassPath == null) {
+            $this->findPaths();
+            $this->checkPaths();
+        }
         return $this->getFilesMaxAge($this->sassPath, array('*.sass', '*.scss'));
     }
 
-    private function getFilesMaxAge($path, $names)
+    /**
+     * Get max_age with a Finder instance
+     *
+     * @param string $path    the path for the Finder instance
+     * @param string $names   the file names
+     * @param int    $default the default time if no files are found
+     *
+     * @return int
+     */
+    private function getFilesMaxAge($path, $names, $default = 0)
     {
         $finder = new Finder();
         $finder->files()->in(realpath($path))->ignoreDotFiles(true);
-        foreach($names as $name) {
+        foreach ($names as $name) {
             $finder->name($name);
         }
         $ages = array();
-        foreach($finder as $file)
-        {
+        foreach ($finder as $file) {
             $ages[] = filemtime($file);
         }
-        return max(array_merge($ages, array(0)));
+        return max(array_merge($ages, array($default)));
     }
 
+    /**
+     * get max_age for config file
+     *
+     * @return int
+     */
     private function getConfigFileAge()
     {
-        return filemtime(realpath($this->projectPath.DIRECTORY_SEPARATOR.$this->configFile));
+        return filemtime(realpath($this->projectPath . DIRECTORY_SEPARATOR . $this->configFile));
     }
 }

@@ -14,9 +14,9 @@
 namespace CompassElephant;
 
 use CompassElephant\CommandCaller,
-    CompassElephant\StalenessChecker\StalenessCheckerInterface,
-    CompassElephant\StalenessChecker\NativeStalenessChecker,
-    CompassElephant\StalenessChecker\FinderStalenessChecker;
+CompassElephant\StalenessChecker\StalenessCheckerInterface,
+CompassElephant\StalenessChecker\NativeStalenessChecker,
+CompassElephant\StalenessChecker\FinderStalenessChecker;
 
 /**
  * CompassElephant
@@ -26,18 +26,28 @@ use CompassElephant\CommandCaller,
 
 class CompassProject
 {
+    /**
+     * @var \CompassElephant\CommandCaller
+     */
     private $commandCaller;
+    /**
+     * @var \CompassElephant\StalenessChecker\StalenessCheckerInterface
+     */
     private $stalenessChecker;
+    /**
+     * @var null|string
+     */
     private $configFile = null;
 
     /**
      * Class constructor
      *
-     * @param CommandCaller $commandCaller a CommandCaller instance
+     * @param CommandCaller                                               $commandCaller    a CommandCaller instance
+     * @param \CompassElephant\StalenessChecker\StalenessCheckerInterface $stalenessChecker A StalenessCheckerInterface instance
      */
     public function __construct(CommandCaller $commandCaller, StalenessCheckerInterface $stalenessChecker)
     {
-        $this->commandCaller = $commandCaller;
+        $this->commandCaller    = $commandCaller;
         $this->stalenessChecker = $stalenessChecker;
     }
 
