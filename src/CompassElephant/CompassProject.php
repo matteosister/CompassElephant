@@ -74,8 +74,12 @@ class CompassProject
         if ($stalenessChecker == null) {
             $stalenessChecker = new FinderStalenessChecker($projectPath, $configFile);
         } else {
-            if (is_string($stalenessChecker)) {
-                $class = new $stalenessChecker()
+            if ($stalenessChecker instanceof StalenessCheckerInterface) {
+                $this->stalenessChecker = $stalenessChecker;
+            } else if (is_string($stalenessChecker)) {
+                $this->stalenessChecker = new $stalenessChecker;
+            } else {
+                throw new \InvalidArgumentException('the parameter $stalenessChecker for CompassProject class should be a string or an instance of StalenessCheckerInterface');
             }
         }
         $this->stalenessChecker = $stalenessChecker;
