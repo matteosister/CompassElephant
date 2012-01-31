@@ -13,11 +13,20 @@
 
 namespace CompassElephant;
 
+use CompassElephant\StalenessChecker\FinderStalenessChecker,
+    CompassElephant\StalenessChecker\NativeStalenessChecker;
+
 class TestCase extends \PHPUnit_Framework_TestCase
 {
     private $path;
     private $binary;
+    /**
+     * @var \CompassElephant\CommandCaller
+     */
     private $commandCaller;
+    /**
+     * @var \CompassElephant\CompassProject
+     */
     private $compassProject;
 
 
@@ -28,9 +37,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->path = $tempName;
         unlink($this->path);
         mkdir($this->path);
-        $this->binary = new CompassBinary(null);
-        $this->commandCaller = new CommandCaller($this->binary, $this->path);
-        $this->compassProject = new CompassProject($this->commandCaller);
+        $this->compassProject = new CompassProject($this->path);
     }
 
     /**
@@ -46,7 +53,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function getBinary()
     {
-        return $this->binary;
+        return $this->compassProject->getCompassBinary();
     }
 
     /**
@@ -54,7 +61,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function getCommandCaller()
     {
-        return $this->commandCaller;
+        return $this->getCompassProject()->getCommandCaller();
     }
 
     /**
@@ -63,5 +70,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function getCompassProject()
     {
         return $this->compassProject;
+    }
+
+    protected function writeStyle($style)
+    {
+        sleep(1.1);
+        $handle = fopen($this->getPath().'/sass/screen.scss', 'w');
+        fwrite($handle, PHP_EOL.$style.PHP_EOL);
+        fclose($handle);
     }
 }

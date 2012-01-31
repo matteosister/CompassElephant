@@ -24,11 +24,10 @@ use CompassElephant\CommandCaller;
 interface StalenessCheckerInterface
 {
     /**
-     * @abstract
-     *
      * return true if the project do not need to be recompiled
      *
      * @return boolean
+     * @abstract
      */
     public function isClean();
 }

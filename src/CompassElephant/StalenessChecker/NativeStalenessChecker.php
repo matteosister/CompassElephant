@@ -24,8 +24,16 @@ use CompassElephant\StalenessChecker\StalenessCheckerInterface,
 
 class NativeStalenessChecker implements StalenessCheckerInterface
 {
+    /**
+     * @var \CompassElephant\CommandCaller
+     */
     private $caller;
 
+    /**
+     * a class constructor
+     *
+     * @param \CompassElephant\CommandCaller $caller a CommandCaller instance
+     */
     public function __construct(CommandCaller $caller)
     {
         $this->caller = $caller;

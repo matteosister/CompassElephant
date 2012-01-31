@@ -11,49 +11,37 @@
  * Just for fun...
  */
 
-namespace CompassElephant;
+namespace CompassElephant\StalenessChecker;
 
 use CompassElephant\TestCase;
 
 /**
- * CompassElephantTest
+ * NativeStalenessCheckerTest
  *
  * @author Matteo Giachino <matteog@gmail.com>
  */
 
-class CompassElephantTest extends TestCase
+class FinderStalenessCheckerTest extends TestCase
 {
     public function setUp()
     {
         $this->initProject();
     }
 
-    public function testBinary()
-    {
-        $this->assertNotNull($this->getBinary()->getPath());
-    }
-
-    public function testCaller()
-    {
-        $this->assertNotNull($this->getCommandCaller());
-    }
-
-    public function testProject()
+    public function testIsClean()
     {
         $cp = $this->getCompassProject();
-        $this->assertNotNull($cp);
         $cp->init();
         $this->assertTrue($cp->isClean());
         $this->writeStyle('body { background-color: #000; }');
         $this->assertFalse($cp->isClean());
         $cp->compile();
         $this->assertTrue($cp->isClean());
-    }
-
-    private function writeStyle($style)
-    {
-        $handle = fopen($this->getPath().'/sass/screen.scss', 'w');
-        fwrite($handle, PHP_EOL.$style.PHP_EOL);
-        fclose($handle);
+        sleep(2);
+        touch($this->getPath().DIRECTORY_SEPARATOR.$this->getCompassProject()->getConfigFile());
+        $this->assertFalse($cp->isClean());
+        $this->assertInstanceOf('CompassElephant\StalenessChecker\FinderStalenessChecker', $this->getCompassProject()->getStalenessChecker());
+        $this->getCompassProject()->setConfigFile('new-config.rb');
+        $this->assertEquals('new-config.rb', $this->getCompassProject()->getConfigFile());
     }
 }
