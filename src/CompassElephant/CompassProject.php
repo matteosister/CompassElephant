@@ -32,6 +32,11 @@ class CompassProject
     private $projectPath;
 
     /**
+     * @var string a project name
+     */
+    private $name;
+
+    /**
      * @var \CompassElephant\CompassBinary
      */
     private $compassBinary;
@@ -54,36 +59,51 @@ class CompassProject
     /**
      * Class constructor
      *
-     * @param string                                                      $projectPath      the path to the compass project
-     * @param \CompassElephant\CompassBinary|null                         $compassBinary    a CompassBinary instance
-     * @param \CompassElephant\CommandCaller                              $commandCaller    a CommandCaller instance
-     * @param mixed                                                       $stalenessChecker a StalenessCheckerInterface instance
-     * @param string                                                      $configFile       the compass config file name
+     * @param string                              $projectPath      the path to the compass project
+     * @param \CompassElephant\CompassBinary|null $compassBinary    a CompassBinary instance
+     * @param \CompassElephant\CommandCaller      $commandCaller    a CommandCaller instance
+     * @param mixed                               $stalenessChecker a StalenessCheckerInterface instance
+     * @param string                              $configFile       the compass config file name
      */
-    public function __construct($projectPath, CompassBinary $compassBinary = null, CommandCaller $commandCaller = null, $stalenessChecker = null, $configFile = 'config.rb')
+    public function __construct($projectPath, $name = null, CompassBinary $compassBinary = null, $stalenessChecker = null, $configFile = 'config.rb', $autoInit = true)
     {
+        if (!is_writable($projectPath)) {
+            throw new \InvalidArgumentException(sprintf('CompassElephant is not able to write in the given path %s', $projectPath));
+        }
         $this->projectPath = $projectPath;
         if ($compassBinary == null) {
             $compassBinary = new CompassBinary();
         }
         $this->compassBinary = $compassBinary;
-        if ($commandCaller == null) {
-            $commandCaller = new CommandCaller($projectPath, $this->compassBinary);
-        }
-        $this->commandCaller = $commandCaller;
+        $this->commandCaller = new CommandCaller($projectPath, $this->compassBinary);
         if ($stalenessChecker == null) {
             $stalenessChecker = new FinderStalenessChecker($projectPath, $configFile);
         } else {
             if ($stalenessChecker instanceof StalenessCheckerInterface) {
                 $this->stalenessChecker = $stalenessChecker;
-            } else if (is_string($stalenessChecker)) {
-                $this->stalenessChecker = new $stalenessChecker;
             } else {
-                throw new \InvalidArgumentException('the parameter $stalenessChecker for CompassProject class should be a string or an instance of StalenessCheckerInterface');
+                if (is_string($stalenessChecker)) {
+                    $this->stalenessChecker = new $stalenessChecker;
+                } else {
+                    throw new \InvalidArgumentException('the parameter $stalenessChecker for CompassProject class should be a string or an instance of StalenessCheckerInterface');
+                }
             }
         }
         $this->stalenessChecker = $stalenessChecker;
-        $this->configFile = $configFile;
+        $this->configFile       = $configFile;
+
+        if (!$this->isInitiated()) {
+            if ($autoInit) {
+                $this->init();
+            } else {
+                throw new \RuntimeException(sprintf('The compass project in path %s seems not initiated. CompassElephant is unable to find the config file %s. You can call ->init() on the CompassProject instance, or go to the folder and call "compass create"', $this->projectPath, $this->configFile));
+            }
+        }
+    }
+
+    public function isInitiated()
+    {
+        return is_file($this->projectPath.DIRECTORY_SEPARATOR.$this->configFile);
     }
 
     /**
