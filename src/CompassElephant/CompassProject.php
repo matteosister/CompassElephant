@@ -60,10 +60,13 @@ class CompassProject
      * Class constructor
      *
      * @param string                              $projectPath      the path to the compass project
+     * @param null                                $name             the project name
      * @param \CompassElephant\CompassBinary|null $compassBinary    a CompassBinary instance
-     * @param \CompassElephant\CommandCaller      $commandCaller    a CommandCaller instance
      * @param mixed                               $stalenessChecker a StalenessCheckerInterface instance
      * @param string                              $configFile       the compass config file name
+     * @param bool                                $autoInit         whether to call init() on an empty folder project
+     *
+     * @internal param \CompassElephant\CommandCaller $commandCaller a CommandCaller instance
      */
     public function __construct($projectPath, $name = null, CompassBinary $compassBinary = null, $stalenessChecker = null, $configFile = 'config.rb', $autoInit = true)
     {
@@ -101,6 +104,11 @@ class CompassProject
         }
     }
 
+    /**
+     * return true if the project has a config file
+     *
+     * @return bool
+     */
     public function isInitiated()
     {
         return is_file($this->projectPath.DIRECTORY_SEPARATOR.$this->configFile);
