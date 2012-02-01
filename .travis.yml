@@ -8,6 +8,7 @@ branches:
     - develop
 
 before_script:
+  - gem install compass
   - wget -nc http://getcomposer.org/composer.phar
   - php composer.phar update
 

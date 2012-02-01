@@ -38,7 +38,10 @@ class CompassProjectTest extends TestCase
     {
         $this->getCompassProject()->init();
         $this->assertNotNull($this->getCommandCaller());
-        $this->assertEquals("unchanged sass/screen.scss\nunchanged sass/print.scss\nunchanged sass/ie.scss", $this->getCommandCaller()->checkState()->getOutput());
+        $output = $this->getCommandCaller()->checkState()->getOutput();
+        $this->assertRegExp("/unchanged sass\/screen.scss/", $output);
+        $this->assertRegExp("/unchanged sass\/ie.scss/", $output);
+        $this->assertRegExp("/unchanged sass\/print.scss/", $output);
     }
 
     public function testProject()
