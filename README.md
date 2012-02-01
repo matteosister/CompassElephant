@@ -85,6 +85,7 @@ Remember to **give the user the right permissions to access the filesystem**. If
 **constructor**
 ``` php
 <?php
+
 $project = new CompassProject("/path/to/compass"); // create the base class, only the path is mandatory....
 // Here is a full customized project
 $path = "/path/to/compass";
@@ -115,6 +116,7 @@ public function __construct($projectPath, $name = null, CompassBinary $compassBi
 **manage a compass project**
 ``` php
 <?php
+
 // if the project do not contains a config file, CompassElephant assumes it isn't initialized. See autoInit parameters for skip this step
 if (!$project->isInitialized()) {
     $project->init(); // call the "compass create" command
