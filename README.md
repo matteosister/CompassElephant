@@ -154,4 +154,4 @@ I promise that, when the issue will be adressed, I will delete this library and 
 Symfony2
 --------
 
-I'm working on a Symfony bundle. It's in the test phase...
+[CompassElephantBundle](https://github.com/matteosister/CompassElephantBundle) let symfony do the work for you
