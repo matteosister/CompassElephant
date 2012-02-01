@@ -28,7 +28,7 @@ To install CompassElephant with composer you simply need to create a *composer.j
 ``` json
 {
     "require": {
-        "cypresslab/compasselephant": ">=0.1.0"
+        "cypresslab/compass-elephant": ">=0.1.0"
     }
 }
 ```

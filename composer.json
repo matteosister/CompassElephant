@@ -1,5 +1,5 @@
 {
-    "name": "cypresslab/gitelephant",
+    "name": "cypresslab/compass-elephant",
     "description": "A library to manage a compass project with PHP",
     "keywords": ["compass", "sass", "css"],
     "homepage": "http://matteosister.github.com/CompassElephant",
