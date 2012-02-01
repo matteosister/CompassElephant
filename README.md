@@ -83,6 +83,7 @@ How to use
 Remember to **give the user the right permissions to access the filesystem**. If you are using a web server give permissions to both your user and the web server user.
 
 **constructor**
+
 ``` php
 <?php
 
@@ -114,6 +115,7 @@ public function __construct($projectPath, $name = null, CompassBinary $compassBi
 ```
 
 **manage a compass project**
+
 ``` php
 <?php
 
