@@ -1,4 +1,4 @@
-# CompassElephant #
+# CompassElephant ![Travis build status](https://secure.travis-ci.org/matteosister/CompassElephant.png)#
 
 A wrapper for the compass binary written in PHP
 
@@ -83,8 +83,10 @@ How to use
 Remember to **give the user the right permissions to access the filesystem**. If you are using a web server give permissions to both your user and the web server user.
 
 **constructor**
+
 ``` php
 <?php
+
 $project = new CompassProject("/path/to/compass"); // create the base class, only the path is mandatory....
 // Here is a full customized project
 $path = "/path/to/compass";
@@ -113,8 +115,10 @@ public function __construct($projectPath, $name = null, CompassBinary $compassBi
 ```
 
 **manage a compass project**
+
 ``` php
 <?php
+
 // if the project do not contains a config file, CompassElephant assumes it isn't initialized. See autoInit parameters for skip this step
 if (!$project->isInitialized()) {
     $project->init(); // call the "compass create" command
