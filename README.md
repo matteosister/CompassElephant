@@ -1,4 +1,4 @@
-# CompassElephant #
+# CompassElephant ![Travis build status](https://secure.travis-ci.org/matteosister/CompassElephant.png)#
 
 A wrapper for the compass binary written in PHP
 
