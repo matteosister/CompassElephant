@@ -97,6 +97,9 @@ class CommandCaller
     {
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
+        if ($process->getExitCode() != 0) {
+            throw new \RuntimeException(sprintf('error while compiling compass project: %s', $process->getErrorOutput()));
+        }
         $this->output = trim($process->getOutput(), PHP_EOL);
     }
 
