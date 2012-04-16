@@ -70,6 +70,7 @@ class CompassProject
      */
     public function __construct($projectPath, $name = null, CompassBinary $compassBinary = null, $stalenessChecker = null, $configFile = 'config.rb', $autoInit = true)
     {
+        $this->name = $name;
         if (!is_writable($projectPath)) {
             throw new \InvalidArgumentException(sprintf('CompassElephant is not able to write in the given path %s', $projectPath));
         }
@@ -238,5 +239,15 @@ class CompassProject
     public function getConfigFile()
     {
         return $this->configFile;
+    }
+
+    /**
+     * Name getter
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
