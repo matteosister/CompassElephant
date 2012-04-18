@@ -136,9 +136,9 @@ class CompassProject
     /**
      * Compile the project
      */
-    public function compile()
+    public function compile($force = false)
     {
-        $this->commandCaller->compile();
+        $this->commandCaller->compile($this->configFile, $force);
     }
 
     /**

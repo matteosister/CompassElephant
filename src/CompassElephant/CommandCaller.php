@@ -59,7 +59,7 @@ class CommandCaller
      */
     public function init()
     {
-        $cmd = $this->binary->getPath().' create --boring';
+        $cmd = 'create --boring';
         $this->execute($cmd);
         return $this;
     }
@@ -71,7 +71,7 @@ class CommandCaller
      */
     public function checkState()
     {
-        $cmd = $this->binary->getPath().' compile --dry-run --boring';
+        $cmd = 'compile --dry-run --boring';
         $this->execute($cmd);
         return $this;
     }
@@ -81,10 +81,14 @@ class CommandCaller
      *
      * @return CommandCaller
      */
-    public function compile()
+    public function compile($config_file, $force)
     {
-        $cmd = $this->binary->getPath().' compile --boring';
+        $cmd = sprintf('compile --config %s --boring', $config_file);
+        if ($force) {
+            $cmd .= ' --force';
+        }
         $this->execute($cmd);
+
         return $this;
     }
 
@@ -95,6 +99,7 @@ class CommandCaller
      */
     private function execute($cmd)
     {
+        $cmd = $this->binary->getPath().' '.$cmd;
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
         if ($process->getExitCode() != 0) {
