@@ -13,9 +13,10 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/process": ">=2.0.0",
-        "symfony/finder": ">=2.0.0"
+        "symfony/process": "2.1.*",
+        "symfony/finder": "2.1.*"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
             "CompassElephant": "src/"

@@ -14,7 +14,8 @@
 namespace CompassElephant;
 
 use Symfony\Component\Process\Process;
-use CompassElephant\CompassBinary;
+use CompassElephant\CompassBinary,
+    CompassElephant\CommandGenerator;
 
 /**
  * Caller
@@ -28,6 +29,11 @@ class CommandCaller
      * @var \CompassElephant\CompassBinary
      */
     private $binary;
+
+    /**
+     * @var CommandGenerator
+     */
+    private $commandGenerator;
     /**
      * @var string
      */
@@ -48,6 +54,7 @@ class CommandCaller
         if ($binary == null) {
             $binary = new CompassBinary();
         }
+        $this->commandGenerator = new CommandGenerator($binary);
         $this->binary = $binary;
         $this->projectPath = realpath($projectPath);
     }
@@ -59,8 +66,7 @@ class CommandCaller
      */
     public function init()
     {
-        $cmd = 'create --boring';
-        $this->execute($cmd);
+        $this->execute($this->commandGenerator->init());
         return $this;
     }
 
@@ -71,8 +77,7 @@ class CommandCaller
      */
     public function checkState()
     {
-        $cmd = 'compile --dry-run --boring';
-        $this->execute($cmd);
+        $this->execute($this->commandGenerator->checkState());
         return $this;
     }
 
@@ -81,14 +86,9 @@ class CommandCaller
      *
      * @return CommandCaller
      */
-    public function compile($config_file, $force)
+    public function compile($config_file, $force, $target)
     {
-        $cmd = sprintf('compile --config %s --boring', $config_file);
-        if ($force) {
-            $cmd .= ' --force';
-        }
-        $this->execute($cmd);
-
+        $this->execute($this->commandGenerator->compile($config_file, $force, $target));
         return $this;
     }
 
@@ -99,7 +99,6 @@ class CommandCaller
      */
     private function execute($cmd)
     {
-        $cmd = $this->binary->getPath().' '.$cmd;
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
         // we don't need to catch process errors because compass write directly to the body:before, and show the error on the page

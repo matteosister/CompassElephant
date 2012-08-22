@@ -1,5 +1,5 @@
 {
-    "hash": "3a60c73608776119a6dc48f7a7b2b3a9",
+    "hash": "b54222bc6f7807bcbc7ba251d178915c",
     "packages": [
         {
             "package": "symfony/finder",
@@ -10,18 +10,8 @@
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/finder",
-            "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1"
-        },
-        {
-            "package": "symfony/process",
-            "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1"
+            "source-reference": "1af11ab3a686f9c45f2a8d9d721d5717cdd5f1d6",
+            "commit-date": "1345026762"
         },
         {
             "package": "symfony/process",
@@ -32,8 +22,8 @@
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "v2.1.0-RC1",
+            "commit-date": "1343512949"
         }
     ],
     "packages-dev": null,
