@@ -57,6 +57,11 @@ class CompassProject
     private $configFile;
 
     /**
+     * @var null|string
+     */
+    private $target;
+
+    /**
      * Class constructor
      *
      * @param string                              $projectPath      the path to the compass project
@@ -71,6 +76,7 @@ class CompassProject
     public function __construct($projectPath, $name = null, CompassBinary $compassBinary = null, $stalenessChecker = null, $configFile = 'config.rb', $autoInit = true)
     {
         $this->name = $name;
+        $this->target = null;
         if (!is_writable($projectPath)) {
             throw new \InvalidArgumentException(sprintf('CompassElephant is not able to write in the given path %s', $projectPath));
         }
@@ -136,9 +142,9 @@ class CompassProject
     /**
      * Compile the project
      */
-    public function compile($force = false, $target = null)
+    public function compile($force = false)
     {
-        $this->commandCaller->compile($this->configFile, $force, $target);
+        $this->commandCaller->compile($this->configFile, $force, $this->target);
     }
 
     /**
@@ -249,5 +255,15 @@ class CompassProject
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Target setter
+     *
+     * @param null|string $target la variabile target
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
     }
 }
