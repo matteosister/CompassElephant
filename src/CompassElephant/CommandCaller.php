@@ -16,6 +16,7 @@ namespace CompassElephant;
 use Symfony\Component\Process\Process;
 use CompassElephant\CompassBinary,
     CompassElephant\CommandGenerator;
+use CompassElephant\Exception\CompassException;
 
 /**
  * Caller
@@ -67,6 +68,7 @@ class CommandCaller
     public function init()
     {
         $this->execute($this->commandGenerator->init());
+
         return $this;
     }
 
@@ -78,17 +80,23 @@ class CommandCaller
     public function checkState()
     {
         $this->execute($this->commandGenerator->checkState());
+
         return $this;
     }
 
     /**
      * build a compile command
      *
+     * @param string $configFile config file name
+     * @param bool   $force      force recompile
+     * @param string $target     target file
+     *
      * @return CommandCaller
      */
-    public function compile($config_file, $force, $target)
+    public function compile($configFile, $force, $target)
     {
-        $this->execute($this->commandGenerator->compile($config_file, $force, $target));
+        $this->execute($this->commandGenerator->compile($configFile, $force, $target));
+
         return $this;
     }
 
@@ -96,12 +104,16 @@ class CommandCaller
      * Execute a command
      *
      * @param string $cmd the command
+     *
+     * @throws Exception\CompassException
      */
     private function execute($cmd)
     {
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
-        // we don't need to catch process errors because compass write directly to the body:before, and show the error on the page
+        if (!$process->isSuccessful()) {
+            throw new CompassException($process->getOutput());
+        }
         $this->output = trim($process->getOutput(), PHP_EOL);
     }
 
