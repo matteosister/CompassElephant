@@ -112,7 +112,7 @@ class CommandCaller
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
         if (!$process->isSuccessful()) {
-            throw new CompassException($process->getOutput());
+            throw new CompassException($process->getErrorOutput());
         }
         $this->output = trim($process->getOutput(), PHP_EOL);
     }
