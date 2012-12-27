@@ -54,6 +54,7 @@ class FinderStalenessChecker implements StalenessCheckerInterface
         if ($this->getConfigFileAge() > max($this->getSassMaxAge(), $this->getStylesheetsMaxAge())) {
             return false;
         }
+
         return $this->getSassMaxAge() <= $this->getStylesheetsMaxAge();
     }
 
@@ -64,11 +65,21 @@ class FinderStalenessChecker implements StalenessCheckerInterface
      */
     private function checkPaths()
     {
+        if (!is_dir($this->sassPath)) {
+            throw new \RuntimeException(sprintf('The path %s do not exists', $this->sassPath));
+        }
+        if (!is_dir($this->cssPath)) {
+            try {
+                mkdir($this->cssPath);
+            } catch (\Exception $e) {
+                throw new \RuntimeException(sprintf('The path %s do not exists, and could not be created', $this->cssPath));
+            }
+        }
         if (!is_writable($this->sassPath)) {
-            throw new \RuntimeException(sprintf('The path %s should be writable (by the webserver user) for CompassElephant to compile the project', realpath($this->sassPath)));
+            throw new \RuntimeException(sprintf('The path %s should be writable (by the webserver user) for CompassElephant to compile the project', $this->sassPath));
         }
         if (!is_writable($this->cssPath)) {
-            throw new \RuntimeException(sprintf('The path %s should be writable (by the webserver user) for CompassElephant to compile the project', realpath($this->cssPath)));
+            throw new \RuntimeException(sprintf('The path %s should be writable (by the webserver user) for CompassElephant to compile the project', $this->cssPath));
         }
     }
 
