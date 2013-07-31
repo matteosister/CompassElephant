@@ -71,6 +71,8 @@ class CompassProject
      * @param string                              $configFile       the compass config file name
      * @param bool                                $autoInit         whether to call init() on an empty folder project
      *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      * @internal param \CompassElephant\CommandCaller $commandCaller a CommandCaller instance
      */
     public function __construct($projectPath, $name = null, CompassBinary $compassBinary = null, $stalenessChecker = null, $configFile = 'config.rb', $autoInit = true)
@@ -210,7 +212,7 @@ class CompassProject
     /**
      * stalenessChecker setter
      *
-     * @param CompassElephant\StalenessChecker\StalenessCheckerInterface $stalenessChecker the instance
+     * @param \CompassElephant\StalenessChecker\StalenessCheckerInterface $stalenessChecker the instance
      */
     public function setStalenessChecker($stalenessChecker)
     {
@@ -220,7 +222,7 @@ class CompassProject
     /**
      * stalenessChecker getter
      *
-     * @return CompassElephant\StalenessChecker\StalenessCheckerInterface
+     * @return \CompassElephant\StalenessChecker\StalenessCheckerInterface
      */
     public function getStalenessChecker()
     {

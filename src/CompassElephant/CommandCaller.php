@@ -114,7 +114,7 @@ class CommandCaller
         if (!$process->isSuccessful()) {
             throw new CompassException($process->getErrorOutput());
         }
-        $this->output = trim($process->getOutput(), PHP_EOL);
+        $this->output = $process->getOutput();
     }
 
     /**
