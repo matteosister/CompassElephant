@@ -1,6 +1,6 @@
 # CompassElephant [![License](https://poser.pugx.org/cypresslab/compass-elephant/license.svg)](https://packagist.org/packages/cypresslab/compass-elephant)
 
-[![Build Status](https://travis-ci.org/matteosister/CompassElephant.svg?branch=master)](https://travis-ci.org/matteosister/CompassElephant) [![Total Downloads](https://poser.pugx.org/cypresslab/compass-elephant/downloads.svg)](https://packagist.org/packages/cypresslab/compass-elephant)
+[![Build Status](https://travis-ci.org/matteosister/CompassElephant.svg?branch=master)](https://travis-ci.org/matteosister/CompassElephant) [![Total Downloads](https://poser.pugx.org/cypresslab/compass-elephant/downloads.svg)](https://packagist.org/packages/cypresslab/compass-elephant) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/96551033-c00f-4c8a-bc46-de46c1b4d126/mini.png)](https://insight.sensiolabs.com/projects/96551033-c00f-4c8a-bc46-de46c1b4d126)
 
 A wrapper for the compass binary written in PHP
 
