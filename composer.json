@@ -3,7 +3,6 @@
     "description": "A library to manage a compass project with PHP",
     "keywords": ["compass", "sass", "css"],
     "homepage": "http://matteosister.github.com/CompassElephant",
-    "version": "0.2.12",
     "license": "LGPL-3.0+",
     "authors": [
         {
