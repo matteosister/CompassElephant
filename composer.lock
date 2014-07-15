@@ -1,44 +1,50 @@
 {
-    "hash": "163f06dfda6bdd56ffbe27e37a73504e",
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "32bf125da0882d75d7311c7f05552643",
     "packages": [
         {
             "name": "symfony/finder",
-            "version": "2.1.x-dev",
+            "version": "v2.5.2",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Finder",
-                "reference": "e5dac3c0c277c1b5266dcb467c49b29dc7fb6a9b"
+                "url": "https://github.com/symfony/Finder.git",
+                "reference": "576d8f69feec477067e91b6bd0367c113e76a1a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Finder/zipball/e5dac3c0c277c1b5266dcb467c49b29dc7fb6a9b",
-                "reference": "e5dac3c0c277c1b5266dcb467c49b29dc7fb6a9b",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/576d8f69feec477067e91b6bd0367c113e76a1a0",
+                "reference": "576d8f69feec477067e91b6bd0367c113e76a1a0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1350717030",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
-            "installation-source": "source",
             "autoload": {
                 "psr-0": {
-                    "Symfony\\Component\\Finder": ""
+                    "Symfony\\Component\\Finder\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Symfony Community",
@@ -46,46 +52,48 @@
                 }
             ],
             "description": "Symfony Finder Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2014-07-15 14:15:12"
         },
         {
             "name": "symfony/process",
-            "version": "2.1.x-dev",
+            "version": "v2.5.2",
             "target-dir": "Symfony/Component/Process",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Process",
-                "reference": "6d483356f7496f1305a67f6a50cc33ec900c3930"
+                "url": "https://github.com/symfony/Process.git",
+                "reference": "5e53efbf61a7fbf73c79e3e08feea50f64c20bfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Process/zipball/6d483356f7496f1305a67f6a50cc33ec900c3930",
-                "reference": "6d483356f7496f1305a67f6a50cc33ec900c3930",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/5e53efbf61a7fbf73c79e3e08feea50f64c20bfa",
+                "reference": "5e53efbf61a7fbf73c79e3e08feea50f64c20bfa",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1350717030",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
-            "installation-source": "source",
             "autoload": {
                 "psr-0": {
-                    "Symfony\\Component\\Process": ""
+                    "Symfony\\Component\\Process\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Symfony Community",
@@ -93,15 +101,24 @@
                 }
             ],
             "description": "Symfony Process Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2014-07-09 09:05:48"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [
+
+    ],
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": [
 
     ]
 }

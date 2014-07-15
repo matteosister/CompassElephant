@@ -16,7 +16,7 @@
         "symfony/process": "~2.1",
         "symfony/finder": "~2.1"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-0": {
             "CompassElephant": "src/"
