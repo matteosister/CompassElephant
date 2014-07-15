@@ -13,8 +13,6 @@
 
 namespace CompassElephant;
 
-use Symfony\Component\Process\Process;
-
 /**
  * CompassBinary
  *

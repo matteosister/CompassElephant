@@ -13,10 +13,8 @@
 
 namespace CompassElephant;
 
-use CompassElephant\CommandCaller,
-CompassElephant\StalenessChecker\StalenessCheckerInterface,
-CompassElephant\StalenessChecker\NativeStalenessChecker,
-CompassElephant\StalenessChecker\FinderStalenessChecker;
+use CompassElephant\StalenessChecker\StalenessCheckerInterface;
+use CompassElephant\StalenessChecker\FinderStalenessChecker;
 
 /**
  * CompassElephant
