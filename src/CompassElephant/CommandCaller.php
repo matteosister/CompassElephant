@@ -14,8 +14,8 @@
 namespace CompassElephant;
 
 use Symfony\Component\Process\Process;
-use CompassElephant\CompassBinary,
-    CompassElephant\CommandGenerator;
+use CompassElephant\CompassBinary;
+use CompassElephant\CommandGenerator;
 use CompassElephant\Exception\CompassException;
 
 /**
@@ -112,7 +112,8 @@ class CommandCaller
         $process = new Process(escapeshellcmd($cmd), $this->projectPath);
         $process->run();
         if (!$process->isSuccessful()) {
-            throw new CompassException($process->getErrorOutput());
+            $output = !empty($process->getErrorOutput()) ? $process->getErrorOutput() : $process->getOutput();
+            throw new CompassException($output);
         }
         $this->output = $process->getOutput();
     }
