@@ -29,11 +29,6 @@ class CommandGenerator
         return $this->generate('create');
     }
 
-    public function checkState()
-    {
-        return $this->generate('compile --dry-run');
-    }
-
     public function compile($config_file, $force, $target)
     {
         $target = null === $target ? '' : $target;

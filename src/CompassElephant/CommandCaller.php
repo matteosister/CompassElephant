@@ -73,18 +73,6 @@ class CommandCaller
     }
 
     /**
-     * build the checkState command, useful for native staleness check implementation
-     *
-     * @return CommandCaller
-     */
-    public function checkState()
-    {
-        $this->execute($this->commandGenerator->checkState());
-
-        return $this;
-    }
-
-    /**
      * build a compile command
      *
      * @param string $configFile config file name
