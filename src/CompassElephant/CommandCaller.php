@@ -25,11 +25,6 @@ use CompassElephant\Exception\CompassException;
 class CommandCaller
 {
     /**
-     * @var \CompassElephant\CompassBinary
-     */
-    private $binary;
-
-    /**
      * @var CommandGenerator
      */
     private $commandGenerator;
@@ -50,11 +45,10 @@ class CommandCaller
      */
     public function __construct($projectPath, CompassBinary $binary = null)
     {
-        if ($binary == null) {
+        if (is_null($binary)) {
             $binary = new CompassBinary();
         }
         $this->commandGenerator = new CommandGenerator($binary);
-        $this->binary = $binary;
         $this->projectPath = realpath($projectPath);
     }
 

@@ -34,7 +34,7 @@ class CompassBinary
     public function __construct($path = null)
     {
         $this->path = $path;
-        if ($path == null) {
+        if (is_null($path)) {
             $this->tryToFindCompassExecutable();
         }
     }

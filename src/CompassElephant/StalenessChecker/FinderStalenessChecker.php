@@ -112,7 +112,7 @@ class FinderStalenessChecker implements StalenessCheckerInterface
      */
     private function getStylesheetsMaxAge()
     {
-        if ($this->cssPath == null) {
+        if (is_null($this->cssPath)) {
             $this->findPaths();
             $this->checkPaths();
         }
@@ -126,7 +126,7 @@ class FinderStalenessChecker implements StalenessCheckerInterface
      */
     private function getSassMaxAge()
     {
-        if ($this->sassPath == null) {
+        if (is_null($this->sassPath)) {
             $this->findPaths();
             $this->checkPaths();
         }

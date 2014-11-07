@@ -79,7 +79,7 @@ class CompassProject
             throw new \InvalidArgumentException(sprintf('CompassElephant is not able to write in the given path %s', $projectPath));
         }
         $this->projectPath = $projectPath;
-        if ($compassBinary == null) {
+        if (is_null($compassBinary)) {
             $compassBinary = new CompassBinary();
         }
         $this->compassBinary = $compassBinary;
