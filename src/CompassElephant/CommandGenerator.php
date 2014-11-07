@@ -9,8 +9,6 @@
 
 namespace CompassElephant;
 
-use CompassElephant\CompassBinary;
-
 class CommandGenerator
 {
     /**
@@ -27,11 +25,6 @@ class CommandGenerator
     public function init()
     {
         return $this->generate('create');
-    }
-
-    public function checkState()
-    {
-        return $this->generate('compile --dry-run');
     }
 
     public function compile($config_file, $force, $target)

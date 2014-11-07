@@ -13,8 +13,6 @@
 
 namespace CompassElephant\StalenessChecker;
 
-use CompassElephant\CommandCaller;
-
 /**
  * StalenessCheckerInterface
  *
