@@ -34,16 +34,6 @@ class CompassProjectTest extends TestCase
         $this->assertNotNull($this->getBinary()->getPath());
     }
 
-    public function testCaller()
-    {
-        $this->getCompassProject()->init();
-        $this->assertNotNull($this->getCommandCaller());
-        $output = $this->getCommandCaller()->checkState()->getOutput();
-        $this->assertRegExp("/unchanged sass\/screen.scss/", $output);
-        $this->assertRegExp("/unchanged sass\/ie.scss/", $output);
-        $this->assertRegExp("/unchanged sass\/print.scss/", $output);
-    }
-
     public function testProject()
     {
         $cp = $this->getCompassProject();

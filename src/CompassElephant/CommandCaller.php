@@ -14,8 +14,6 @@
 namespace CompassElephant;
 
 use Symfony\Component\Process\Process;
-use CompassElephant\CompassBinary,
-    CompassElephant\CommandGenerator;
 use CompassElephant\Exception\CompassException;
 
 /**
@@ -68,18 +66,6 @@ class CommandCaller
     public function init()
     {
         $this->execute($this->commandGenerator->init());
-
-        return $this;
-    }
-
-    /**
-     * build the checkState command, useful for native staleness check implementation
-     *
-     * @return CommandCaller
-     */
-    public function checkState()
-    {
-        $this->execute($this->commandGenerator->checkState());
 
         return $this;
     }
