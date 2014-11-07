@@ -13,10 +13,7 @@
 
 namespace CompassElephant;
 
-use CompassElephant\CommandCaller,
-CompassElephant\StalenessChecker\StalenessCheckerInterface,
-CompassElephant\StalenessChecker\NativeStalenessChecker,
-CompassElephant\StalenessChecker\FinderStalenessChecker;
+use CompassElephant\StalenessChecker\FinderStalenessChecker;
 
 /**
  * CompassElephant
@@ -67,7 +64,6 @@ class CompassProject
      * @param string                              $projectPath      the path to the compass project
      * @param null                                $name             the project name
      * @param \CompassElephant\CompassBinary|null $compassBinary    a CompassBinary instance
-     * @param mixed                               $stalenessChecker a StalenessCheckerInterface instance
      * @param string                              $configFile       the compass config file name
      * @param bool                                $autoInit         whether to call init() on an empty folder project
      *
@@ -75,7 +71,7 @@ class CompassProject
      * @throws \InvalidArgumentException
      * @internal param \CompassElephant\CommandCaller $commandCaller a CommandCaller instance
      */
-    public function __construct($projectPath, $name = null, CompassBinary $compassBinary = null, $stalenessChecker = null, $configFile = 'config.rb', $autoInit = true)
+    public function __construct($projectPath, $name = null, CompassBinary $compassBinary = null, $configFile = 'config.rb', $autoInit = true)
     {
         $this->name = $name;
         $this->target = null;
@@ -88,21 +84,8 @@ class CompassProject
         }
         $this->compassBinary = $compassBinary;
         $this->commandCaller = new CommandCaller($projectPath, $this->compassBinary);
-        if ($stalenessChecker == null) {
-            $stalenessChecker = new FinderStalenessChecker($projectPath, $configFile);
-        } else {
-            if ($stalenessChecker instanceof StalenessCheckerInterface) {
-                $this->stalenessChecker = $stalenessChecker;
-            } else {
-                if (is_string($stalenessChecker)) {
-                    $this->stalenessChecker = new $stalenessChecker;
-                } else {
-                    throw new \InvalidArgumentException('the parameter $stalenessChecker for CompassProject class should be a string or an instance of StalenessCheckerInterface');
-                }
-            }
-        }
-        $this->stalenessChecker = $stalenessChecker;
-        $this->configFile       = $configFile;
+        $this->stalenessChecker = new FinderStalenessChecker($projectPath, $configFile);
+        $this->configFile = $configFile;
 
         if (!$this->isInitiated()) {
             if ($autoInit) {
@@ -143,6 +126,7 @@ class CompassProject
 
     /**
      * Compile the project
+     * @param bool $force
      */
     public function compile($force = false)
     {

@@ -9,8 +9,6 @@
 
 namespace CompassElephant;
 
-use CompassElephant\CompassBinary;
-
 class CommandGenerator
 {
     /**

@@ -13,7 +13,6 @@
 
 namespace CompassElephant\StalenessChecker;
 
-use CompassElephant\StalenessChecker\StalenessCheckerInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
