@@ -32,11 +32,6 @@ class CommandGeneratorTest extends TestCase
         $this->assertEquals($this->gitPath.' create --boring', $this->generator->init());
     }
 
-    public function testCheckState()
-    {
-        $this->assertEquals($this->gitPath.' compile --dry-run --boring', $this->generator->checkState());
-    }
-
     public function testCompile()
     {
         $this->assertEquals($this->gitPath.' compile --config config.rb --boring', $this->generator->compile('config.rb', false, null));
