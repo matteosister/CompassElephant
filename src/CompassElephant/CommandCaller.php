@@ -14,8 +14,6 @@
 namespace CompassElephant;
 
 use Symfony\Component\Process\Process;
-use CompassElephant\CompassBinary;
-use CompassElephant\CommandGenerator;
 use CompassElephant\Exception\CompassException;
 
 /**
